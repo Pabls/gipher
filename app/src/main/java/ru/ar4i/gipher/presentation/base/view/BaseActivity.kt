@@ -1,7 +1,6 @@
 package ru.ar4i.gipher.presentation.base.view
 
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import ru.ar4i.gipher.presentation.base.presenter.BasePresenter

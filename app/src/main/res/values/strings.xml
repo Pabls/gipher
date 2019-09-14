@@ -3,6 +3,8 @@
     <string name="menu_search">Search gifs</string>
     <string name="menu_search_hint">Search gifs</string>
 
-    <string name="activity_splash.text.app_name">GIPHER</string>
+    <string name="activity_splash.text.app_name.first">GI</string>
+    <string name="activity_splash.text.app_name.second">PH</string>
+    <string name="activity_splash.text.app_name.third">ER</string>
     <string name="activity_splash.text.app_info">giphy.com client for free use</string>
 </resources>

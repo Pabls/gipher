@@ -1,7 +1,7 @@
 package ru.ar4i.gipher.app.di.components
 
 import ru.ar4i.gipher.app.di.modules.PresenterModule
-import ru.ar4i.gipher.presentation.gifs.GifsFragment
+import ru.ar4i.gipher.presentation.gifs.view.GifsFragment
 import ru.ar4i.gipher.presentation.splash.view.SplashActivity
 
 interface ApplicationComponent {

@@ -18,6 +18,8 @@ android {
 
         buildConfigField "String", "BASE_URL", '"https://api.giphy.com/"'
         buildConfigField "String", "API_KEY", '"vbbot4VZaFn5d34lUITb3wxhs0ItDLl2"'
+        buildConfigField "int" , "READ_TIMEOUT_MILS" , '10000'
+        buildConfigField "int" , "CONNECT_TIMEOUT_MILS" , '10000'
     }
     buildTypes {
         release {

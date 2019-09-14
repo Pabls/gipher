@@ -1,4 +1,4 @@
-package ru.ar4i.gipher.presentation.gifs
+package ru.ar4i.gipher.presentation.gifs.view
 
 import android.os.Bundle
 import android.text.InputType
@@ -11,6 +11,7 @@ import ru.ar4i.gipher.app.App
 import ru.ar4i.gipher.presentation.base.presenter.BasePresenter
 import ru.ar4i.gipher.presentation.base.view.BaseFragment
 import ru.ar4i.gipher.presentation.base.view.IMvpView
+import ru.ar4i.gipher.presentation.gifs.presenter.GifsPresenter
 
 
 class GifsFragment : BaseFragment(), GifsView {
@@ -42,7 +43,7 @@ class GifsFragment : BaseFragment(), GifsView {
     }
 
     override fun inject() {
-        App.component.inject(this)
+        App.getComponent().inject(this)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
