@@ -1,7 +1,8 @@
-package ru.ar4i.gipher
+package ru.ar4i.gipher.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import ru.ar4i.gipher.R
 
 class MainActivity : AppCompatActivity() {
 
