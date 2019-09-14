@@ -5,4 +5,6 @@
     <color name="accent">#26ca95</color>
 
     <color name="light_black">#1e252b</color>
+    <color name="accent_dark">#09806c</color>
+    <color name="comet">#585b6d</color>
 </resources>

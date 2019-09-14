@@ -8,9 +8,10 @@ import ru.ar4i.gipher.presentation.base.presenter.BasePresenter
 
 abstract class BaseActivity : AppCompatActivity(), IMvpView {
 
-    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
-        super.onCreate(savedInstanceState, persistentState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         setContentView(getLayoutId())
+        inject()
         getPresenter()?.attachView(this)
     }
 
@@ -26,5 +27,7 @@ abstract class BaseActivity : AppCompatActivity(), IMvpView {
     abstract fun getLayoutId(): Int
 
     abstract fun getPresenter(): BasePresenter<IMvpView>?
+
+    abstract fun inject()
 
 }

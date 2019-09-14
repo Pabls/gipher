@@ -1,7 +1,5 @@
 package ru.ar4i.gipher.app.di.modules
 
-import ru.ar4i.gipher.data.network.api.Api
-import ru.ar4i.gipher.data.network.api.GiphyApi
 import ru.ar4i.gipher.data.repositories.GifsRepository
 import ru.ar4i.gipher.domain.IGifsRepository
 

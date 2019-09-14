@@ -1,6 +1,7 @@
 package ru.ar4i.gipher.presentation.splash.view
 
 import ru.ar4i.gipher.R
+import ru.ar4i.gipher.app.App
 import ru.ar4i.gipher.presentation.base.presenter.BasePresenter
 import ru.ar4i.gipher.presentation.base.view.BaseActivity
 import ru.ar4i.gipher.presentation.base.view.IMvpView
@@ -24,4 +25,7 @@ class SplashActivity : BaseActivity(), ISplashView {
         this.presenter = presenter
     }
 
+    override fun inject() {
+        App.component.inject(this)
+    }
 }

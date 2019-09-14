@@ -16,6 +16,7 @@ abstract class BaseFragment : Fragment(), IMvpView {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        inject()
         getPresenter()?.attachView(this)
     }
 
@@ -31,4 +32,6 @@ abstract class BaseFragment : Fragment(), IMvpView {
     abstract fun getLayoutId(): Int
 
     abstract fun getPresenter(): BasePresenter<IMvpView>?
+
+    abstract fun inject()
 }
