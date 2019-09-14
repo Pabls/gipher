@@ -22,5 +22,7 @@
     <dimen name="text_size_18">18sp</dimen>
     <dimen name="text_size_20">20sp</dimen>
     <dimen name="text_size_22">22sp</dimen>
+    <dimen name="text_size_40">40sp</dimen>
 
+    <dimen name="splash_screen_icon_size">128dp</dimen>
 </resources>

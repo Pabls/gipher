@@ -1,4 +1,6 @@
 package ru.ar4i.gipher.data.network.api
 
-object GiphyApi: Api {
+import com.google.gson.Gson
+
+class GiphyApi(private val gson: Gson) : Api {
 }
