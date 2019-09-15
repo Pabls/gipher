@@ -5,10 +5,11 @@ import ru.ar4i.gipher.presentation.splash.presenter.SplashPresenter
 
 class PresenterModule {
 
-    private val presenterModule: InteractorModule = InteractorModule()
+    private val interactorModule: InteractorModule = InteractorModule()
 
-    fun provideSplashPresenter(): SplashPresenter = SplashPresenter(presenterModule.providePreparationDataInteractor())
+    fun provideSplashPresenter(): SplashPresenter =
+        SplashPresenter(interactorModule.providePreparationDataInteractor(), interactorModule.provideResourceInteractor())
 
     fun provideGifsPresenter(): GifsPresenter =
-        GifsPresenter(presenterModule.provideGifsInteractor())
+        GifsPresenter(interactorModule.provideGifsInteractor(), interactorModule.provideResourceInteractor())
 }

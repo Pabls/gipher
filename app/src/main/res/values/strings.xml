@@ -7,4 +7,9 @@
     <string name="activity_splash.text.app_name.second">PH</string>
     <string name="activity_splash.text.app_name.third">ER</string>
     <string name="activity_splash.text.app_info">giphy.com client for free use</string>
+
+    <string name="fragment_gifs.text.no_data">No data</string>
+
+    <string name="common.check_internet_connection">check your internet connection</string>
+    <string name="common.empty"></string>
 </resources>

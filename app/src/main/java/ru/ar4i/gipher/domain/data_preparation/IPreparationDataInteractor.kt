@@ -1,5 +1,5 @@
 package ru.ar4i.gipher.domain.data_preparation
 
 interface IPreparationDataInteractor {
-    suspend fun checkDataAvailability()
+    suspend fun checkDataAvailability(): Boolean
 }

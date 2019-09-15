@@ -2,9 +2,14 @@ package ru.ar4i.gipher.presentation.gifs.view
 
 import android.os.Bundle
 import android.text.InputType
-import android.view.*
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.View
+import android.widget.TextView
 import androidx.appcompat.widget.SearchView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import ru.ar4i.gipher.R
 import ru.ar4i.gipher.app.App
@@ -12,6 +17,7 @@ import ru.ar4i.gipher.presentation.base.presenter.BasePresenter
 import ru.ar4i.gipher.presentation.base.view.BaseFragment
 import ru.ar4i.gipher.presentation.base.view.IMvpView
 import ru.ar4i.gipher.presentation.gifs.presenter.GifsPresenter
+import ru.ar4i.gipher.presentation.gifs.view.adapter.GifsAdapter
 
 
 class GifsFragment : BaseFragment(), GifsView {
@@ -26,10 +32,37 @@ class GifsFragment : BaseFragment(), GifsView {
     private var searchViewEditText: SearchView? = null
     private var swipeRefreshLayout: SwipeRefreshLayout? = null
     private var recyclerView: RecyclerView? = null
+    private var tvNoData: TextView? = null
+    private var adapter: GifsAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setHasOptionsMenu(true)
         super.onCreate(savedInstanceState)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initView(view)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.search_menu, menu)
+        val actionSearch = menu.findItem(R.id.menu_search)
+        searchViewEditText = actionSearch?.actionView as SearchView
+        searchViewEditText?.queryHint = getString(R.string.menu_search_hint)
+        searchViewEditText?.inputType = InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS
+        searchViewEditText?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                presenter?.queryTextChange(query)
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                presenter?.queryTextChange(newText)
+                return true
+            }
+        })
     }
 
     override fun getLayoutId(): Int {
@@ -46,22 +79,27 @@ class GifsFragment : BaseFragment(), GifsView {
         App.getComponent().inject(this)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.search_menu, menu)
-        val actionSearch = menu.findItem(R.id.menu_search)
-        searchViewEditText = actionSearch?.actionView as SearchView
-        searchViewEditText?.queryHint = getString(R.string.menu_search_hint)
-        searchViewEditText?.inputType = InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS
-        searchViewEditText?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                return true
-            }
+    override fun showLoading() {
+        swipeRefreshLayout?.isRefreshing = true
+    }
 
-            override fun onQueryTextChange(newText: String?): Boolean {
-                return true
-            }
-        })
+    override fun hideLoading() {
+        swipeRefreshLayout?.isRefreshing = false
+    }
+
+    override fun setItems(urls: List<String>) {
+        adapter?.setItems(urls)
+        recyclerView?.visibility = View.VISIBLE
+        tvNoData?.visibility = View.GONE
+    }
+
+    override fun addItems(urls: List<String>) {
+        adapter?.addItems(urls)
+    }
+
+    override fun showNoDataMessage() {
+        recyclerView?.visibility = View.GONE
+        tvNoData?.visibility = View.VISIBLE
     }
 
     fun setPresenter(presenter: GifsPresenter) {
@@ -69,7 +107,19 @@ class GifsFragment : BaseFragment(), GifsView {
     }
 
     private fun initView(view: View) {
+        adapter = GifsAdapter()
         swipeRefreshLayout = view.findViewById(R.id.sr_layout)
+        swipeRefreshLayout?.setOnRefreshListener { presenter?.onSwipe() }
+        swipeRefreshLayout?.setProgressBackgroundColorSchemeColor(
+            ContextCompat.getColor(
+                this.activity!!,
+                R.color.accent
+            )
+        )
         recyclerView = view.findViewById(R.id.rv_gifs)
+        recyclerView?.setHasFixedSize(true)
+        recyclerView?.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+        recyclerView?.adapter = adapter
+        tvNoData = view.findViewById(R.id.tv_no_data)
     }
 }

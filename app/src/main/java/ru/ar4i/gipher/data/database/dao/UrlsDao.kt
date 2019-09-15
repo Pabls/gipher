@@ -8,10 +8,11 @@ class UrlsDao(private val dbHelper: DbHelper) : IUrlsDao {
 
     override fun insertUrls(urls: List<String>) {
         try {
-            val db = this.dbHelper.getWritableDatabase()
+            val db = this.dbHelper.writableDatabase
+            db.execSQL(Urls.getTableСleanupСommand())
             for (url in urls) {
                 val cv = Urls.toContentValue(url)
-                db.replace(Urls.getTableName(), null, cv)
+                db.insertOrThrow(Urls.getTableName(), null, cv)
             }
             closeConnection()
         } catch (ex: Exception) {

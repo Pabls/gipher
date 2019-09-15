@@ -15,13 +15,13 @@ import javax.net.ssl.HttpsURLConnection
 
 class GiphyApi(private val gson: Gson) : Api {
 
-    override fun getTrendingGifs(): ApiResponse? {
-        val uri = getUriBuilder(Urls.getTrendingGifsUrl())?.build()
+    override fun getTrendingGifs(limit: Int, offset: Int): ApiResponse? {
+        val uri = getUriBuilder(Urls.getTrendingGifsUrl(), limit, offset)?.build()
         return getResponse(uri)
     }
 
-    override fun getGifsByQuery(query: String): ApiResponse? {
-        val uri = getUriBuilder(Urls.getSearchGifsUrl())
+    override fun getGifsByQuery(query: String, limit: Int, offset: Int): ApiResponse? {
+        val uri = getUriBuilder(Urls.getSearchGifsUrl(), limit, offset)
             .appendQueryParameter(RequestParams.QUERY, query)
             .build()
         return getResponse(uri)
@@ -36,32 +36,42 @@ class GiphyApi(private val gson: Gson) : Api {
         }
     }
 
-    private fun getUriBuilder(url: String): Uri.Builder {
+    private fun getUriBuilder(url: String, limit: Int, offset: Int): Uri.Builder {
         return Uri.parse(url)
             .buildUpon()
             .appendQueryParameter(RequestParams.API_KEY, BuildConfig.API_KEY)
+            .appendQueryParameter(RequestParams.LIMIT, limit.toString())
+            .appendQueryParameter(RequestParams.OFFSET, offset.toString())
     }
 
     private fun downloadUrl(url: URL): String? {
         var connection: HttpsURLConnection? = null
-        return try {
-            connection = (url.openConnection() as? HttpsURLConnection)
-            connection?.run {
-                readTimeout = BuildConfig.READ_TIMEOUT_MILS
-                connectTimeout = BuildConfig.CONNECT_TIMEOUT_MILS
-                requestMethod = "GET"
-                doInput = true
-                connect()
-                if (responseCode != HttpsURLConnection.HTTP_OK) {
-                    throw IOException("HTTP error code: $responseCode")
+        try {
+            return try {
+                connection = (url.openConnection() as? HttpsURLConnection)
+                connection?.run {
+                    readTimeout = BuildConfig.READ_TIMEOUT_MILS
+                    connectTimeout = BuildConfig.CONNECT_TIMEOUT_MILS
+                    requestMethod = RequestParams.HTTP_GET
+                    doInput = true
+                    connect()
+                    if (responseCode != HttpsURLConnection.HTTP_OK) {
+                        throw IOException("$responseCode")
+                    }
+                    val res = inputStream?.let { stream ->
+                        readStream(stream, 10000000)
+                    }
+                    connection?.inputStream?.close()
+                    connection?.disconnect()
+                    res
                 }
-                inputStream?.let { stream ->
-                    readStream(stream, 500)
-                }
+            } catch (e: Exception) {
+                connection?.inputStream?.close()
+                connection?.disconnect()
+                null
             }
-        } finally {
-            connection?.inputStream?.close()
-            connection?.disconnect()
+        } catch (e: Exception) {
+            return null
         }
     }
 

@@ -13,7 +13,9 @@
             android:supportsRtl="true">
 
         <activity android:name=".presentation.splash.view.SplashActivity"
-                  android:theme="@style/SplashTheme">
+                  android:theme="@style/SplashTheme"
+                  android:finishOnTaskLaunch="true"
+                  android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 

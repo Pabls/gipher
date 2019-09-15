@@ -8,6 +8,7 @@
     <dimen name="margin_16">16dp</dimen>
     <dimen name="margin_24">24dp</dimen>
     <dimen name="margin_32">32dp</dimen>
+    <dimen name="margin_64">64dp</dimen>
 
     <dimen name="padding_0">0dp</dimen>
     <dimen name="padding_4">4dp</dimen>
@@ -23,6 +24,9 @@
     <dimen name="text_size_20">20sp</dimen>
     <dimen name="text_size_22">22sp</dimen>
     <dimen name="text_size_40">40sp</dimen>
+    <dimen name="text_size_56">56sp</dimen>
 
     <dimen name="splash_screen_icon_size">128dp</dimen>
+
+    <dimen name="cardview_elevation_4">4dp</dimen>
 </resources>
