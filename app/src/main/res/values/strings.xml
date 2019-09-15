@@ -9,7 +9,7 @@
     <string name="activity_splash.text.app_info">giphy.com client for free use</string>
 
     <string name="fragment_gifs.text.no_data">No data</string>
-    <string name="fragment_gifs.text.default_search_query">cat</string>
+    <string name="fragment_gifs.text.default_search_query">trending</string>
 
     <string name="common.check_internet_connection">check your internet connection</string>
     <string name="common.empty"></string>

@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import ru.ar4i.gipher.app.App
+import ru.ar4i.gipher.data.models.Gif
 import ru.ar4i.gipher.presentation.base.presenter.BasePresenter
 import ru.ar4i.gipher.presentation.base.view.BaseFragment
 import ru.ar4i.gipher.presentation.base.view.IMvpView
@@ -87,13 +88,13 @@ class GifsFragment : BaseFragment(), GifsView {
         swipeRefreshLayout?.isRefreshing = false
     }
 
-    override fun setItems(urls: List<String>) {
+    override fun setItems(urls: List<Gif>) {
         adapter?.setItems(urls)
         recyclerView?.visibility = View.VISIBLE
         tvNoData?.visibility = View.GONE
     }
 
-    override fun addItems(urls: List<String>) {
+    override fun addItems(urls: List<Gif>) {
         adapter?.addItems(urls)
     }
 
@@ -135,7 +136,7 @@ class GifsFragment : BaseFragment(), GifsView {
                     !presenter?.loadingInProgress()!! &&
                     viewsIds != null &&
                     totalItemCount != null &&
-                    (viewsIds.contains(totalItemCount - 20) || viewsIds.contains(totalItemCount))
+                    (viewsIds.contains(totalItemCount - 20) || viewsIds.contains(totalItemCount - 2))
                 ) {
                     presenter?.loadGifs()
                 }

@@ -26,7 +26,7 @@ data class Data(
     @SerializedName("import_datetime") val importDatetime: String?,
     @SerializedName("trending_datetime") val trendingDatetime: String?,
     @SerializedName("images") val images: Images,
-    @SerializedName("title") val title: String?
+    @SerializedName("title") val title: String
 )
 
 data class Downsized(

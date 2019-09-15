@@ -3,6 +3,7 @@ package ru.ar4i.gipher.presentation.gifs.presenter
 import kotlinx.coroutines.*
 import ru.ar4i.gipher.R
 import ru.ar4i.gipher.data.models.Gif
+import ru.ar4i.gipher.data.models.GifModel
 import ru.ar4i.gipher.data.network.responses.ResponseStatus
 import ru.ar4i.gipher.domain.gifs.IGifsInteractor
 import ru.ar4i.gipher.domain.resources.IResourceInteractor
@@ -18,7 +19,7 @@ class GifsPresenter(
         private val MIN_SEARCH_STRING_LENGTH = 2
         private val DEFAULT_LIMIT = 40
         private val DEFAULT_OFFSET = 0
-        private val DELAY = 700L
+        private val DELAY = 600L
         private var OFFSET = 0
     }
 
@@ -26,8 +27,8 @@ class GifsPresenter(
     private var textChangedJob: Job? = null
     private var paginationLoadingJob: Job? = null
     private var currentSearchQuery: String =
-        resourceInteractor.getStringById(R.string.fragment_gifs_text_default_search_query)
-    private var urls: List<String> = ArrayList()
+        resourceInteractor.getStringById(R.string.common_empty)
+    private var urls: List<Gif> = ArrayList()
 
     override fun attachView(view: GifsView?) {
         super.attachView(view)
@@ -103,8 +104,8 @@ class GifsPresenter(
             }
         }
 
-    private fun checkError(gif: Gif) {
-        if (gif.meta.status == ResponseStatus.NOT_FOUND.code) {
+    private fun checkError(gifModel: GifModel) {
+        if (gifModel.meta.status == ResponseStatus.NOT_FOUND.code) {
             getView()?.showError(resourceInteractor.getStringById(R.string.common_check_internet_connection))
         }
     }

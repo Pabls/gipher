@@ -16,16 +16,28 @@
                                                        android:layout_marginStart="@dimen/margin_4"
                                                        android:layout_marginEnd="@dimen/margin_4">
 
+        <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="match_parent"
+                android:gravity="center"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginTop="@dimen/margin_8"
+                android:textStyle="bold"
+                android:textSize="@dimen/text_size_18"
+                android:textColor="@color/accent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
         <ImageView android:id="@+id/img_gif"
                    android:layout_width="match_parent"
                    android:layout_height="match_parent"
                    android:src="@drawable/ic_gif"
                    tools:src="@tools:sample/avatars"
-                   android:layout_marginTop="8dp"
+                   android:layout_marginTop="@dimen/margin_8"
                    android:adjustViewBounds="true"
-                   app:layout_constraintTop_toTopOf="parent"
                    app:layout_constraintStart_toStartOf="parent"
-                   app:layout_constraintEnd_toEndOf="parent"/>
+                   app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toBottomOf="@+id/tv_title"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

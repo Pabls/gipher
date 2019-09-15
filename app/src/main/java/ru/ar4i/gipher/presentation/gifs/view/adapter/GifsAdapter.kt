@@ -3,19 +3,20 @@ package ru.ar4i.gipher.presentation.gifs.view.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import ru.ar4i.gipher.data.models.Gif
 
 
 class GifsAdapter : RecyclerView.Adapter<GifsViewHolder>() {
 
-    private var items: MutableList<String> = ArrayList()
+    private var items: MutableList<Gif> = ArrayList()
 
-    fun setItems(list: List<String>) {
+    fun setItems(list: List<Gif>) {
         this.items.clear()
         this.items.addAll(list)
         notifyDataSetChanged()
     }
 
-    fun addItems(list: List<String>) {
+    fun addItems(list: List<Gif>) {
         this.items.addAll(list)
         notifyDataSetChanged()
     }
@@ -30,6 +31,7 @@ class GifsAdapter : RecyclerView.Adapter<GifsViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: GifsViewHolder, position: Int) {
-        holder.bind(items[position])
+        val gif = items[position]
+        holder.bind(gif.url, gif.title)
     }
 }

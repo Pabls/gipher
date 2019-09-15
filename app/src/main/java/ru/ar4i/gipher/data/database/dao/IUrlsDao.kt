@@ -1,7 +1,9 @@
 package ru.ar4i.gipher.data.database.dao
 
+import ru.ar4i.gipher.data.models.Gif
+
 interface IUrlsDao {
-    fun insertUrls(urls: List<String>)
-    fun selectUrls(): List<String>
+    fun insertGifs(gifs: List<Gif>)
+    fun selectGifs(): List<Gif>
     fun checkDataAvailability(): Boolean
 }
