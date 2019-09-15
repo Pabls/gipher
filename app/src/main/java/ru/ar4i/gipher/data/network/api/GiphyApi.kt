@@ -21,7 +21,7 @@ class GiphyApi(private val gson: Gson) : Api {
     }
 
     override fun getGifsByQuery(query: String, limit: Int, offset: Int): ApiResponse? {
-        val uri = getUriBuilder(Urls.getSearchGifsUrl(), limit, offset)
+        val uri = getUriBuilder(Urls.getSearchStickersUrl(), limit, offset)
             .appendQueryParameter(RequestParams.QUERY, query)
             .build()
         return getResponse(uri)

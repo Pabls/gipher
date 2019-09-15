@@ -2,6 +2,8 @@ package ru.ar4i.gipher.presentation.gifs.presenter
 
 import kotlinx.coroutines.*
 import ru.ar4i.gipher.R
+import ru.ar4i.gipher.data.models.Gif
+import ru.ar4i.gipher.data.network.responses.ResponseStatus
 import ru.ar4i.gipher.domain.gifs.IGifsInteractor
 import ru.ar4i.gipher.domain.resources.IResourceInteractor
 import ru.ar4i.gipher.presentation.base.presenter.BasePresenter
@@ -16,14 +18,15 @@ class GifsPresenter(
         private val MIN_SEARCH_STRING_LENGTH = 2
         private val DEFAULT_LIMIT = 40
         private val DEFAULT_OFFSET = 0
-        private val DELAY = 800L
+        private val DELAY = 700L
         private var OFFSET = 0
     }
 
     private var getDataJob: Job? = null
     private var textChangedJob: Job? = null
-    private var currentSearchQuery: String = resourceInteractor.getStringById(R.string.common_empty)
-    private var searchQueryForPagination: String = resourceInteractor.getStringById(R.string.common_empty)
+    private var paginationLoadingJob: Job? = null
+    private var currentSearchQuery: String =
+        resourceInteractor.getStringById(R.string.fragment_gifs_text_default_search_query)
     private var urls: List<String> = ArrayList()
 
     override fun attachView(view: GifsView?) {
@@ -43,6 +46,15 @@ class GifsPresenter(
         } else {
             startInitialJob()
         }
+    }
+
+    fun loadingInProgress(): Boolean {
+        return paginationLoadingJob != null && (if (paginationLoadingJob?.isActive != null) return paginationLoadingJob!!.isActive else return false)
+    }
+
+    fun loadGifs() {
+        if (!currentSearchQuery.isNullOrEmpty())
+            paginationLoadingJob = getGifsByPagination()
     }
 
     fun queryTextChange(query: String?) {
@@ -68,33 +80,40 @@ class GifsPresenter(
             val gif = withContext(Dispatchers.IO) { interactor.getGifsByQuery(query, DEFAULT_LIMIT, DEFAULT_OFFSET) }
             getView()?.hideLoading()
             if (gif.urls.isEmpty()) {
+                checkError(gif)
                 getView()?.showNoDataMessage()
             } else {
                 urls = gif.urls
                 getView()?.setItems(gif.urls)
             }
-            OFFSET = 0
+            OFFSET = DEFAULT_OFFSET
         }
 
     private fun getGifsByPagination() =
         GlobalScope.launch(Dispatchers.Main) {
             OFFSET += DEFAULT_LIMIT
-            val gif = withContext(Dispatchers.IO) {
-                interactor.getGifsByQuery(
-                    currentSearchQuery,
-                    DEFAULT_LIMIT,
-                    OFFSET
-                )
-            }
+            getView()?.showLoading()
+            val gif =
+                withContext(Dispatchers.IO) { interactor.getGifsByQuery(currentSearchQuery, DEFAULT_LIMIT, OFFSET) }
+            getView()?.hideLoading()
             if (gif.urls.isNotEmpty()) {
                 getView()?.addItems(gif.urls)
+            } else {
+                checkError(gif)
             }
         }
+
+    private fun checkError(gif: Gif) {
+        if (gif.meta.status == ResponseStatus.NOT_FOUND.code) {
+            getView()?.showError(resourceInteractor.getStringById(R.string.common_check_internet_connection))
+        }
+    }
 
     private fun cancelJob() {
         getView()?.hideLoading()
         getDataJob?.cancel()
         textChangedJob?.cancel()
+        paginationLoadingJob?.cancel()
     }
 
     private fun getInitialGifsUrls() = GlobalScope.launch(Dispatchers.Main) {

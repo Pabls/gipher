@@ -11,7 +11,6 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import ru.ar4i.gipher.R
 import ru.ar4i.gipher.app.App
 import ru.ar4i.gipher.presentation.base.presenter.BasePresenter
 import ru.ar4i.gipher.presentation.base.view.BaseFragment
@@ -34,6 +33,7 @@ class GifsFragment : BaseFragment(), GifsView {
     private var recyclerView: RecyclerView? = null
     private var tvNoData: TextView? = null
     private var adapter: GifsAdapter? = null
+    private var layoutManager: StaggeredGridLayoutManager? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setHasOptionsMenu(true)
@@ -47,10 +47,10 @@ class GifsFragment : BaseFragment(), GifsView {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.search_menu, menu)
-        val actionSearch = menu.findItem(R.id.menu_search)
+        inflater.inflate(ru.ar4i.gipher.R.menu.search_menu, menu)
+        val actionSearch = menu.findItem(ru.ar4i.gipher.R.id.menu_search)
         searchViewEditText = actionSearch?.actionView as SearchView
-        searchViewEditText?.queryHint = getString(R.string.menu_search_hint)
+        searchViewEditText?.queryHint = getString(ru.ar4i.gipher.R.string.menu_search_hint)
         searchViewEditText?.inputType = InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS
         searchViewEditText?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -66,7 +66,7 @@ class GifsFragment : BaseFragment(), GifsView {
     }
 
     override fun getLayoutId(): Int {
-        return R.layout.fragment_gifs
+        return ru.ar4i.gipher.R.layout.fragment_gifs
     }
 
     override fun getPresenter(): BasePresenter<IMvpView>? {
@@ -108,18 +108,42 @@ class GifsFragment : BaseFragment(), GifsView {
 
     private fun initView(view: View) {
         adapter = GifsAdapter()
-        swipeRefreshLayout = view.findViewById(R.id.sr_layout)
+        layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+
+        recyclerView = view.findViewById(ru.ar4i.gipher.R.id.rv_gifs)
+        recyclerView?.setHasFixedSize(true)
+        recyclerView?.layoutManager = layoutManager
+        recyclerView?.adapter = adapter
+
+        swipeRefreshLayout = view.findViewById(ru.ar4i.gipher.R.id.sr_layout)
         swipeRefreshLayout?.setOnRefreshListener { presenter?.onSwipe() }
         swipeRefreshLayout?.setProgressBackgroundColorSchemeColor(
             ContextCompat.getColor(
                 this.activity!!,
-                R.color.accent
+                ru.ar4i.gipher.R.color.accent
             )
         )
-        recyclerView = view.findViewById(R.id.rv_gifs)
-        recyclerView?.setHasFixedSize(true)
-        recyclerView?.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-        recyclerView?.adapter = adapter
-        tvNoData = view.findViewById(R.id.tv_no_data)
+
+        tvNoData = view.findViewById(ru.ar4i.gipher.R.id.tv_no_data)
+
+        recyclerView?.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                val totalItemCount = layoutManager?.getItemCount()
+                val viewsIds = layoutManager?.findLastVisibleItemPositions(null)
+                if (presenter != null &&
+                    !presenter?.loadingInProgress()!! &&
+                    viewsIds != null &&
+                    totalItemCount != null &&
+                    (viewsIds.contains(totalItemCount - 20) || viewsIds.contains(totalItemCount))
+                ) {
+                    presenter?.loadGifs()
+                }
+            }
+
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+            }
+        })
     }
 }

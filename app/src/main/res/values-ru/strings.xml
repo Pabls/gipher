@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">ГИФЕР</string>
+    <string name="menu_search">Поиск</string>
+    <string name="menu_search_hint">Поиск</string>
+
+    <string name="activity_splash.text.app_name.first">ГИ</string>
+    <string name="activity_splash.text.app_name.second">Ф</string>
+    <string name="activity_splash.text.app_name.third">ЕР</string>
+    <string name="activity_splash.text.app_info">giphy.com клиент</string>
+
+    <string name="fragment_gifs.text.no_data">По данному запросу ничего не найдено :(</string>
+
+    <string name="common.check_internet_connection">Проверьте ваше подключение к сети интернет</string>
+    <string name="common.empty"></string>
+</resources>

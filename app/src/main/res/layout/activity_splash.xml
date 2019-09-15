@@ -15,7 +15,7 @@
             android:layout_height="match_parent">
 
         <TextView
-                android:text="GI"
+                android:text="@string/activity_splash.text.app_name.first"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/tv_first_logo"
@@ -25,7 +25,7 @@
                 app:layout_constraintEnd_toStartOf="@+id/tv_second_logo"
                 app:layout_constraintTop_toTopOf="@+id/tv_second_logo"/>
         <TextView
-                android:text="PH"
+                android:text="@string/activity_splash.text.app_name.second"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/tv_second_logo"
@@ -39,7 +39,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"/>
         <TextView
-                android:text="ER"
+                android:text="@string/activity_splash.text.app_name.third"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="#09806c"
